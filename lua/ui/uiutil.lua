@@ -186,7 +186,11 @@ function UpdateWorldBorderState(skin, isOn)
                         MapBorderAdd(skins[skin].imagerMeshDetails)
                     end
                 elseif mapHeight == mapWidth * 2 then
-                   -- TODO: Someone please make a mesh for this case.
+                    -- Tall maps
+                    MapBorderAdd(skins[skin].imagerMeshVert)
+                    if skins[skin].imagerMeshDetailsVert then
+                        MapBorderAdd(skins[skin].imagerMeshDetailsVert)
+                    end
                 end
             end
         else
