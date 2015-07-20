@@ -128,8 +128,8 @@ restrictedUnits = {
         tooltip = "restricted_units_wall",
     },
     ENGISTATION = {
-        categories = {"xeb0104", "xrb0104"},
-        name = "<LOC restricted_units_data_023>No Engineering Stations",
+        categories = {"xeb0104", "xrb0104", "uea0001"},
+        name = "<LOC restricted_units_data_023>No Engineering Stations or Drones",
         tooltip = "restricted_units_engineeringstation",
     },
     SUPERGAMEENDERS = {
