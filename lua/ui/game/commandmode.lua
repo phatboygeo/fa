@@ -128,6 +128,16 @@ function EndCommandMode(isCancel)
     issuedOneCommand = false
 end
 
+--- End the current command mode or deselect all selected units
+--
+function KillCommandMode()
+    if GetCommandMode()[1] ~= false then
+        EndCommandMode(true)
+    elseif GetSelectedUnits() then
+        SelectUnits(nil)
+    end
+end
+
 function AddCommandFeedbackByType(pos, type)
 
     if commandMeshResources[type] == nil then

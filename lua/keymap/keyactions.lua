@@ -5,7 +5,7 @@
 --  order - the sort order to list this action under its category
 
 keyActions = {
-    ['escape'] = {action = 'UI_Lua import("/lua/ui/uimain.lua").EscapeHandler()',
+    ['escape'] = {action = 'UI_Lua import("/lua/ui/game/commandmode.lua").KillCommandMode()',
         category = 'ui', order = 1,},
     ['pause'] = {action = 'UI_Lua import("/lua/ui/game/tabs.lua").TogglePause()',
         category = 'ui', order = 3,},
