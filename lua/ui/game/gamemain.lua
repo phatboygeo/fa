@@ -39,27 +39,25 @@ local lastObserving
 -- end faf variables
 
 -- Hotbuild stuff
-modifiersKeys = {}
+keymapOverride = {}
 -- Adding modifiers shorcuts on the fly.
 local currentKeyMap = import('/lua/keymap/keymapper.lua').GetKeyMappings(true)
 for key, action in currentKeyMap do
     if action["category"] == "hotbuilding" then
         if key ~= nil then
             if not import('/lua/keymap/keymapper.lua').IsKeyInMap("Shift-" .. key, currentKeyMap) then
-                modifiersKeys["Shift-" .. key] = action
-            else
-                WARN("Shift-" .. key .. " is already bind")
+                keymapOverride["Shift-" .. key] = action
             end
 
             if not import('/lua/keymap/keymapper.lua').IsKeyInMap("Alt-" .. key, currentKeyMap) then
-                modifiersKeys["Alt-" .. key] = action
-            else
-                WARN("Alt-" .. key .. " is already bind")
+                keymapOverride["Alt-" .. key] = action
             end
         end
     end
 end
-IN_AddKeyMapTable(modifiersKeys)
+keymapOverride['Escape'] = {action = 'UI_Lua import("/lua/ui/eschandler.lua").CurrentEscapeHandler:HandleEscape()', category = 'ui', order = 2,},
+
+IN_AddKeyMapTable(keymapOverride)
 
 -- check this flag to see if it's valid to show the exit dialog
 supressExitDialog = false
