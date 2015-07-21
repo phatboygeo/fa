@@ -37,7 +37,7 @@ local round = import('/lua/ui/lobby/trueskill.lua').round
 local Player = import('/lua/ui/lobby/trueskill.lua').Player
 local Rating = import('/lua/ui/lobby/trueskill.lua').Rating
 local Teams = import('/lua/ui/lobby/trueskill.lua').Teams
-local EscapeHandler = import('/lua/ui/dialogs/eschandler.lua')
+local EscapeHandler = import('/lua/ui/eschandler.lua').CurrentEscapeHandler
 local CountryTooltips = import('/lua/ui/help/tooltips-country.lua').tooltip
 local JSON = import('/lua/system/dkson.lua').json
 
@@ -518,7 +518,7 @@ function ReallyCreateLobby(protocol, localPort, desiredPlayerName, localPlayerUI
             "<LOC lobby_0000>Exit game lobby?",
             "<LOC _Yes>", function()
                 ReturnToMenu(false)
-                EscapeHandler.PopEscapeHandler()
+                EscapeHandler:PopEscapeHandler()
             end,
 
             -- Fight to keep our focus on the chat input box, to prevent keybinding madness.
@@ -529,7 +529,7 @@ function ReallyCreateLobby(protocol, localPort, desiredPlayerName, localPlayerUI
             true
         )
     end
-    EscapeHandler.PushEscapeHandler(GUI.exitLobbyEscapeHandler)
+    EscapeHandler:PushEscapeHandler(GUI.exitLobbyEscapeHandler)
 
     GUI.connectdialog = UIUtil.ShowInfoDialog(GUI, Strings.TryingToConnect, Strings.AbortConnect, ReturnToMenu)
     -- Prevent the dialog from being closed due to user action.
@@ -2568,7 +2568,7 @@ function CreateUI(maxPlayers)
     GUI.chatEdit.OnEscPressed = function(self, text)
         -- The default behaviour buggers up our escape handlers. Just delegate the escape push to
         -- the escape handling mechanism.
-        EscapeHandler.HandleEsc(true)
+        EscapeHandler:HandleEscape(true)
 
         -- Don't clear the textbox, either.
         return true

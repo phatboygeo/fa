@@ -3,10 +3,13 @@
 --* Author: Chris Blackwell
 --* Summary: The entry point for UI scripting
 --*
---* Copyright © 2005 Gas Powered Games, Inc.  All rights reserved.
+--* Copyright ï¿½ 2005 Gas Powered Games, Inc.  All rights reserved.
 --*****************************************************************************
 
-local UIUtil = import('uiutil.lua')
+-- Create a new escapehandler (TODO: Reinitialize it on state changes)
+local CurrentEscapeHandler = import('/lua/ui/eschandler.lua').CurrentEscapeHandler
+
+local UIUtil = import('/lua/ui/uiutil.lua')
 local UIFile = UIUtil.UIFile
 local Prefs = import('/lua/user/prefs.lua')
 local Text = import('/lua/maui/text.lua').Text
@@ -18,7 +21,7 @@ local alreadySetup = false
 
 --* Initialize the UI states, this is always called on startup
 function SetupUI()
-    
+
     -- SetCursor needs to happen anytime this function is called because we
     -- could be switching lua states.
     local c = UIUtil.CreateCursor()
@@ -103,27 +106,20 @@ end
 --* The following scripts are alternate entry points to the UI from the engine
 --* Typically these are dialog popup type calls
 
--- context sensitive exit dialog
+--- Called by the engine when Alt+F4 is pressed or the chrome exit button is clicked.
+--
+-- @param yesNoOnly Silly parameter passed by the engine.
+--
 function ShowEscapeDialog(yesNoOnly)
-    import('/lua/ui/dialogs/eschandler.lua').HandleEsc(yesNoOnly)
-end
-
--- when escape is pressed and it's not captured by any controls, this defines the behvaior of what should occur
-local escapeHandler = nil
-
-function SetEscapeHandler(handler)
-    escapeHandler = handler
-end
-
--- called by the engine when escape is pressed but there's no specific handler for it
-function EscapeHandler()
-    if not WorldIsLoading() and (import('/lua/ui/game/gamemain.lua').supressExitDialog != true) then
-        if escapeHandler then
-            escapeHandler()
-        else
-            import('/lua/ui/dialogs/eschandler.lua').HandleEsc()
-        end
+    if not WorldIsLoading() and (import('/lua/ui/game/gamemain.lua').supressExitDialog ~= true) then
+        import('/lua/ui/dialogs/eschandler.lua').CreateDialog()
     end
+end
+
+--- Delegates the actual work of escapehandling to /lua/ui/eschandler.lua
+--
+function EscapeHandler()
+    CurrentEscapeHandler:HandleEscape()
 end
 
 -- network disconnection/boot dialog
@@ -174,6 +170,10 @@ end
 
 function AddOnMouseClickedFunc(func)
     table.insert(mouseClickFuncs, func)
+end
+
+function SetEscapeHandler(func)
+    -- noop
 end
 
 function RemoveOnMouseClickedFunc(func)

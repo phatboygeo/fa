@@ -23,7 +23,7 @@ local ItemList = import('/lua/maui/itemlist.lua').ItemList
 local CampaignManager = import('/lua/ui/campaign/campaignmanager.lua')
 local Prefs = import('/lua/user/prefs.lua')
 local hotstats = import('/lua/ui/dialogs/hotstats.lua')
-local EscapeHandler = import('/lua/ui/dialogs/eschandler.lua')
+local EscapeHandlerDialog = import('/lua/ui/dialogs/eschandler.lua')
 
 dialog = false
 local currentPage = false
@@ -448,7 +448,7 @@ function CreateSkirmishScreen(victory, showCampaign, operationVictoryTable)
             CampaignManager.OperationVictory(operationVictoryTable, true)
         end
 
-        EscapeHandler.SafeQuit()
+        EscapeHandlerDialog.SafeQuit()
     end
     Tooltip.AddButtonTooltip(bg.continueBtn, 'PostScore_Quit')
 

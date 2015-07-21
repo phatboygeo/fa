@@ -14,6 +14,7 @@ local GameCommon = import('/lua/ui/game/gamecommon.lua')
 local Bitmap = import('/lua/maui/bitmap.lua').Bitmap
 local Movie = import('/lua/maui/movie.lua').Movie
 local Prefs = import('/lua/user/prefs.lua')
+local eschandler = import('/lua/ui/eschandler.lua')
 local options = Prefs.GetFromCurrentProfile('options')
 
 local gameParent = false
@@ -146,6 +147,9 @@ function OnFirstUpdate()
 end
 
 function CreateUI(isReplay)
+    -- Initialize a new escapehandler stack for use during the game / replay
+    eschandler.InitEscapeHandler()
+
     ConExecute("Cam_Free off")
     local prefetchTable = { models = {}, anims = {}, d3d_textures = {}, batch_textures = {} }
 
